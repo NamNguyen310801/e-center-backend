@@ -1,0 +1,25 @@
+const user = require("./user");
+const classR = require("./class");
+const course = require("./course");
+const tuitionR = require("./tuition");
+const lesson = require("./lesson");
+const schedule = require("./schedule");
+const salary = require("./salary");
+const image = require("./image");
+const video = require("./video");
+const email = require("./email");
+const banner = require("./banner");
+const routes = (app) => {
+  app.use("/api/user", user);
+  app.use("/api/class", classR);
+  app.use("/api/course", course);
+  app.use("/api/tuition", tuitionR);
+  app.use("/api/lesson", lesson);
+  app.use("/api/schedule", schedule);
+  app.use("/api/salary", salary);
+  app.use("/api/image", image);
+  app.use("/api/video", video);
+  app.use("/api/email", email);
+  app.use("/api/banner", banner);
+};
+module.exports = routes;
