@@ -12,6 +12,7 @@ const courseSchema = new mongoose.Schema(
     isComingSoon: { type: Boolean },
     isSelling: { type: Boolean },
     isCompletable: { type: Boolean },
+    rating: { type: Number, default: 0 },
     tracks: [
       {
         _id: { type: mongoose.Schema.Types.ObjectId, auto: true },

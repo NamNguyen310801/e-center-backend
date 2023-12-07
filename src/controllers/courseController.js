@@ -200,6 +200,40 @@ const deleteLessonInCourse = async (req, res) => {
     });
   }
 };
+const createRating = async (req, res) => {
+  try {
+    const data = req.body;
+    if (!data?.courseId || !data?.rating || !data?.userId) {
+      return res.status(200).json({
+        status: "ERROR",
+        message: "Vui lòng nhập đầy đủ thông tin",
+      });
+    }
+    const response = await courseService.createRating(data);
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(404).json({
+      message: error,
+    });
+  }
+};
+const updateCourseRating = async (req, res) => {
+  try {
+    const data = req.body;
+    if (!data?.courseId) {
+      return res.status(200).json({
+        status: "ERROR",
+        message: "Vui lòng nhập đầy đủ thông tin",
+      });
+    }
+    const response = await courseService.updateCourseRating(data?.courseId);
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(404).json({
+      message: error,
+    });
+  }
+};
 module.exports = {
   createCourse,
   updateCourse,
@@ -211,4 +245,6 @@ module.exports = {
   deleteTrack,
   deleteLessonInCourse,
   getDetailCourse,
+  createRating,
+  updateCourseRating,
 };

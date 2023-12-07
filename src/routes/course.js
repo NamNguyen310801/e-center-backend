@@ -37,4 +37,7 @@ router.delete(
   authMiddleware(1),
   courseController.deleteLessonInCourse
 );
+router.post("/create-review", courseController.createRating);
+router.put("/update-rating", courseController.updateCourseRating);
+
 module.exports = router;

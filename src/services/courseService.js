@@ -1,4 +1,6 @@
 const Course = require("../models/CourseModel");
+const Review = require("../models/ReviewModel");
+const User = require("../models/UserModel");
 const createCourse = async (newCourse) => {
   const {
     name,
@@ -318,6 +320,95 @@ const deleteLessonInCourse = async (courseId, trackId, lessonId) => {
     throw error;
   }
 };
+const createRating = async (data) => {
+  try {
+    const { courseId, userId, rating, description = "" } = data;
+
+    const checkCourse = await Course.findOne({
+      _id: courseId,
+    });
+    if (!checkCourse) {
+      return {
+        status: "Error",
+        message: "Khóa học không tồn tại",
+      };
+    }
+    const checkUser = await User.findOne({
+      _id: userId,
+    });
+    if (!checkUser) {
+      return {
+        status: "Error",
+        message: "Người dùng không tồn tại",
+      };
+    }
+    const checkReview = await Review.findOne({
+      courseId: courseId,
+      userId: userId,
+    });
+    if (checkReview) {
+      return {
+        status: "Error",
+        message: "Bạn đã đánh giá khóa học này rồi",
+      };
+    }
+    const newReview = await Review.create({
+      courseId: courseId,
+      userId: userId,
+      rating: rating,
+      description: description || "",
+    });
+    if (!newReview) {
+      return {
+        status: "Error",
+        message: "Lỗi xảy ra khi tạo đánh giá",
+      };
+    }
+    return {
+      status: "OK",
+      message: "Đánh giá khóa học thành công",
+      data: newReview,
+    };
+  } catch (error) {
+    return {
+      status: "Error",
+      message: "Lỗi xảy ra khi tạo đánh giá",
+      error: error.message,
+    };
+  }
+};
+const updateCourseRating = async (courseId) => {
+  try {
+    const reviews = await Review.find({ courseId }).select("rating");
+    if (reviews.length > 0) {
+      const totalRating = reviews.reduce(
+        (sum, review) => sum + review.rating,
+        0
+      );
+      const averageRating = totalRating / reviews.length;
+      const course = await Course.findById(courseId);
+      if (course) {
+        course.rating = averageRating;
+        await course.save();
+        return {
+          status: "OK",
+          message: "Đánh giá khóa học thành công",
+          data: course,
+        };
+      }
+      return {
+        status: "Error",
+        message: "Khóa học không tồn tại",
+      };
+    }
+  } catch (error) {
+    return {
+      status: "Error",
+      message: "Lỗi khi cập nhật rating của khóa học",
+      error: error.message,
+    };
+  }
+};
 module.exports = {
   createCourse,
   updateCourse,
@@ -329,4 +420,6 @@ module.exports = {
   deleteTrack,
   deleteLessonInCourse,
   getDetailCourse,
+  createRating,
+  updateCourseRating,
 };
