@@ -2,12 +2,12 @@ const BannerModel = require("../models/BannerModel");
 const ImageModel = require("../models/ImageModel");
 
 const createImage = async (newImage) => {
-  const { name = "", url, type = "active" } = newImage;
+  const { name = "", image, type = "active" } = newImage;
   try {
     // Tạo một mới hình ảnh từ dữ liệu được gửi lên
     const createImage = await ImageModel.create({
       name,
-      url,
+      image,
       type,
     });
     if (createImage) {
@@ -81,12 +81,12 @@ const deleteImage = async (id) => {
   }
 };
 const createBanner = async (newBanner) => {
-  const { name = "", url } = newBanner;
+  const { name = "", image } = newBanner;
   try {
     // Tạo một mới hình ảnh từ dữ liệu được gửi lên
     const createBanner = await BannerModel.create({
       name,
-      url,
+      image,
     });
     if (createBanner) {
       return {

@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const imageSchema = new mongoose.Schema(
   {
     name: { type: String, require: true },
-    url: { type: String, require: true },
-    type: { type: String, default: "active" },
+    image: { type: String, require: true },
+    type: { type: Number, default: 1 },
   },
   {
     timestamps: true,

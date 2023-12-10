@@ -3,8 +3,8 @@ const imageService = require("../services/imageService");
 //create
 const createImage = async (req, res) => {
   try {
-    const { url } = req.body;
-    if (!url) {
+    const { image } = req.body;
+    if (!image) {
       return res.status(200).json({
         status: "ERROR",
         message: "Vui lòng nhập đầy đủ thông tin",
@@ -40,13 +40,7 @@ const updateImage = async (req, res) => {
 
 const getAllImage = async (req, res) => {
   try {
-    const { limit, page, sort, filter } = req.query;
-    const response = await imageService.getAllImage(
-      Number(limit),
-      Number(page) || 0,
-      sort,
-      filter
-    );
+    const response = await imageService.getAllImage();
     return res.status(200).json(response);
   } catch (error) {
     return res.status(404).json({
