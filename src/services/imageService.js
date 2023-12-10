@@ -2,7 +2,7 @@ const BannerModel = require("../models/BannerModel");
 const ImageModel = require("../models/ImageModel");
 
 const createImage = async (newImage) => {
-  const { name = "", image, type = "active" } = newImage;
+  const { name = "", image, type = 1 } = newImage;
   try {
     // Tạo một mới hình ảnh từ dữ liệu được gửi lên
     const createImage = await ImageModel.create({
