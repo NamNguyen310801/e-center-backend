@@ -1,7 +1,7 @@
 const ClassModel = require("../models/ClassModel");
 
 const createClass = async (newClass) => {
-  const { name, course = "" } = newClass;
+  const { name, course = "", dayStart = "", dayEnd = "" } = newClass;
   try {
     // Tạo một mới lớp học từ dữ liệu được gửi lên
     const existingClass = await ClassModel.findOne({ name });
@@ -14,6 +14,8 @@ const createClass = async (newClass) => {
     const createClass = await ClassModel.create({
       name,
       course,
+      dayStart,
+      dayEnd,
     });
     if (createClass) {
       return {
