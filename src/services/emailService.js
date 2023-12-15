@@ -149,6 +149,37 @@ const sendTuition = async (data) => {
     };
   }
 };
+const confirmTuition = async (data) => {
+  try {
+    const { email } = data;
+    const checkUser = await User.findOne({ email: email });
+    if (checkUser === null) {
+      return {
+        status: "ERROR",
+        message: "Người dùng không tồn tại",
+      };
+    }
+
+    // Gửi mã OTP đến email
+    const mailOptions = {
+      from: '"Trung tâm tiếng anh Wonderland" <phuognanm2k1a@gmail.com>',
+      to: email,
+      subject: "Thông báo được hoàn thành học phí",
+      text: `Bạn đã được hoàn thành một khoản học phí. Vui lòng truy cập trang web để kiểm tra!`,
+    };
+    await transporter.sendMail(mailOptions);
+    return {
+      status: "OK",
+      message: "Gửi email thành công",
+    };
+  } catch (error) {
+    return {
+      status: "ERROR",
+      message: "Lỗi khi gửi email",
+      error: error.message,
+    };
+  }
+};
 const sendSalary = async (data) => {
   try {
     const { email } = data;
@@ -164,6 +195,35 @@ const sendSalary = async (data) => {
       to: email,
       subject: "Thông báo tiền lương",
       text: `Bạn đã có một khoản tiền lương mới. Vui lòng truy cập trang web để kiểm tra!`,
+    };
+    await transporter.sendMail(mailOptions);
+    return {
+      status: "OK",
+      message: "Gửi email thành công",
+    };
+  } catch (error) {
+    return {
+      status: "ERROR",
+      message: "Lỗi khi gửi email",
+      error: error.message,
+    };
+  }
+};
+const confirmSalary = async (data) => {
+  try {
+    const { email } = data;
+    const checkUser = await User.findOne({ email: email });
+    if (checkUser === null) {
+      return {
+        status: "ERROR",
+        message: "Người dùng không tồn tại",
+      };
+    }
+    const mailOptions = {
+      from: '"Trung tâm tiếng anh Wonderland" <phuognanm2k1a@gmail.com>',
+      to: email,
+      subject: "Thông báo thanh toán tiền lương",
+      text: `Bạn đã được thanh toán có một khoản tiền lương. Vui lòng truy cập trang web để kiểm tra!`,
     };
     await transporter.sendMail(mailOptions);
     return {
@@ -212,6 +272,8 @@ module.exports = {
   resetPassword,
   verifyOTP,
   sendTuition,
+  confirmTuition,
   sendSalary,
+  confirmSalary,
   confirmRegisterCourse,
 };
